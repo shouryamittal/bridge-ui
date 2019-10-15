@@ -1,0 +1,20 @@
+.signup-form{
+    padding-top:30px;
+    padding-left:10px;
+    padding-right:10px;
+    padding-bottom: 30px;
+}
+
+.signup-text{
+    text-align: center;
+}
+.signup-text > p{
+    font-size: 25px;
+    font-weight: bolder;
+}
+button{
+    width:100%;
+}
+.login-section{
+    padding-top:10px;
+}
