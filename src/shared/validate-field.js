@@ -20,13 +20,14 @@ const validateFormFields = (name, value, errors) => {
         }
         
         case 'password' :{
-            errors.password = (value.length >= 6 && value.length <= 10) && (utilObj.passwordRegex.test(value)) ? '': 'Invalid password Format'
+            utilObj['pass'] = value;
+            errors.password = (value.length < 6 || value.length > 10) ? 'Password Must be 6 - 10 character long': (utilObj.passwordRegex.test(value)) ? '': 'Invalid password Format'
             break;
         }   
 
         case 'confirm_password':{
             errors.confirm_password = 
-            (value.length >= 6 && value.length <= 10) && (utilObj.passwordRegex.test(value)) ? '': 'Invalid Password Format'
+            (value.length < 6 || value.length > 10) ? 'Password Must be 6 - 10 character long' : (!utilObj.passwordRegex.test(value)) ? 'Invalid Format': (value === utilObj.pass)? '': 'Password Does not match'
             break;
         }
         default:

@@ -20,9 +20,8 @@ export default class Signup extends React.Component{
 
     submitSignupForm = (e) => {
         e.preventDefault();
-        if(this.validateForm(this.state)){
-            console.log("Form is Valid")
-            /*submit the form */
+        if(this.validateForm(this.state))
+        {
             let userInfo = {
                     name: this.state.name,
                     email: this.state.email,
@@ -30,9 +29,6 @@ export default class Signup extends React.Component{
             }
 
             this.props.signup(userInfo);
-        }
-        else{
-            console.log("Form is not valid")
         }
     }
 
@@ -78,6 +74,9 @@ export default class Signup extends React.Component{
                             <div className = "ui two column very relaxed stackable grid">
                                 <div className = "column">
                                     <form className = "ui form signup-form" onSubmit = {this.submitSignupForm}>
+                                        <div className = "errorMsg">
+                                            {this.state.errors.emptyForm}
+                                        </div>
                                         <div className = "field">
                                             <label>Full Name</label>
                                             <input name = "name" type = "text" 
