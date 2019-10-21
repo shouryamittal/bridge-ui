@@ -1,7 +1,10 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
+import axios from 'axios';
 import './login.css';
+
 import validateFormFields from '../../shared/validate-field';
+import AuthContext from '../../shared/contexts/authContext';
 
 
 export default class Login extends React.Component{
@@ -9,6 +12,8 @@ export default class Login extends React.Component{
     state = {
         username: '',
         password: '',
+        isLoggedin: false,
+        isError: false,
         errors:{
             username:'',
             password: '',
@@ -16,19 +21,45 @@ export default class Login extends React.Component{
         }
     }
 
+    static contextType = AuthContext;
+
     submitLoginForm = (e) =>{
         e.preventDefault();
         if(this.validateLoginForm(this.state))
         {
-            console.log('Form is Valid')
+            let {setAuthToken} = this.context;
             let userInfo = {
-                name: this.state.username,
+                username: this.state.username,
                 password: this.state.password
             }
-            this.props.login(userInfo);
-        }
-        else{
-            console.log('Form is Invalid')
+
+            axios({
+                method: 'post', 
+                url: 'https://gentle-bayou-42940.herokuapp.com/signin',
+                data: {
+                    email: userInfo.username,
+                    password: userInfo.password
+                }
+            })
+            .then((response) => {
+                 if(response.status === 200){
+
+                    localStorage.setItem('authToken', response.data.token);
+                    setAuthToken(response.data.token)
+                    this.setState({isLoggedin: true})
+                }
+                else{
+                   this.setState({isError: true})
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                this.setState({isError: true})
+            })
+
+            if(this.state.isLoggedin){
+                return <Redirect to = '/'/>
+            }
         }
     }
 
